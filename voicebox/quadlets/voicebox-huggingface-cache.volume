@@ -1,0 +1,6 @@
+[Unit]
+Description=Voicebox HuggingFace Cache Volume
+
+[Volume]
+VolumeName=voicebox-huggingface-cache
+

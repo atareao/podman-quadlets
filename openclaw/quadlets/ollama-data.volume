@@ -1,0 +1,5 @@
+[Unit]
+Description=Volume for storing Large Language Models weights
+
+[Volume]
+VolumeName=ollama-data

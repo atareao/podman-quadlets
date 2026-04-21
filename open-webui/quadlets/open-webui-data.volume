@@ -1,0 +1,6 @@
+[Unit]
+Description=Volume for storing data of Open WebUI
+
+[Volume]
+VolumeName=open-webui-data
+

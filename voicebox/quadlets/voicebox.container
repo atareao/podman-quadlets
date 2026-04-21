@@ -1,0 +1,32 @@
+[Unit]
+Description=Voicebox Service
+After=network-online.target
+
+[Container]
+ContainerName=voicebox
+Image=localhost/atareao/voicebox:latest
+# If you want to build locally as in compose, use:
+# Build=Context=.
+PublishPort=127.0.0.1:17493:17493
+AddDevice=nvidia.com/gpu=all
+# Environment variables for your API keys or Local LLM endpoint
+Environment="OLLAMA_DEBUG=1"
+Environment=NVIDIA_DRIVER_CAPABILITIES=all
+Environment=NVIDIA_VISIBLE_DEVICES=all
+Annotation=run.oci.keep_original_groups=1
+
+Environment=LOG_LEVEL=info NUMBA_CACHE_DIR=/tmp/numba_cache
+# Referencing the Quadlet volumes defined below
+Volume=voicebox-data.volume:/app/data:Z
+Volume=voicebox-huggingface-cache.volume:/home/voicebox/.cache/huggingface:Z
+Network=voicebox-network.network
+# Resource Limits
+Memory=16G
+
+[Service]
+CPUQuota=400%
+Restart=always
+
+[Install]
+# This replaces "restart: unless-stopped" by linking it to the user session
+WantedBy=default.target

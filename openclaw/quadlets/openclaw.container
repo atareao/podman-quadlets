@@ -1,0 +1,28 @@
+[Unit]
+Description=OpenClaw AI Agent - Digital Sovereignty at its best
+After=network-online.target
+
+[Container]
+# We use the official image (check their latest tag)
+Image=ghcr.io/openclaw/openclaw:latest
+ContainerName=openclaw
+PublishPort=18789:18789
+# Environment variables for your API keys or Local LLM endpoint
+
+Environment=OPENAI_BASE_URL=http://host.containers.internal:8000/v1
+Environment=OPENAI_API_KEY=token-not-needed-locally
+Environment=MODEL=Qwen/Qwen2.5-Coder-7B-Instruct-AWQ
+
+Volume=openclaw_config:/home/node/.openclaw
+#Volume=/home/lorenzo/projects:/app/workspace:Z
+Volume=%h/projects:/app/workspace:Z
+
+
+
+[Service]
+# Restart the container if it fails
+Restart=always
+
+[Install]
+# Start this container when the user logs in
+WantedBy=default.target

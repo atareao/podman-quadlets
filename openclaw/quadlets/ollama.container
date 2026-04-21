@@ -1,0 +1,25 @@
+[Unit]
+Description=Ollama
+After=network-online.target
+
+[Container]
+# We use the official image (check their latest tag)
+Image=docker.io/ollama/ollama:latest
+ContainerName=ollama
+PublishPort=11434:11434
+AddDevice=nvidia.com/gpu=all
+# Environment variables for your API keys or Local LLM endpoint
+Environment="OLLAMA_DEBUG=1"
+Environment=NVIDIA_DRIVER_CAPABILITIES=all
+Environment=NVIDIA_VISIBLE_DEVICES=all
+Annotation=run.oci.keep_original_groups=1
+
+Volume=ollama_data.volume:/root/.ollama:Z
+
+[Service]
+# Restart the container if it fails
+Restart=always
+
+[Install]
+# Start this container when the user logs in
+WantedBy=default.target

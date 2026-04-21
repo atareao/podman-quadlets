@@ -1,0 +1,18 @@
+[Unit]
+Description=Open WebUI - The best frontend for local AI
+After=vllm.service
+
+[Container]
+Image=ghcr.io/open-webui/open-webui:main
+ContainerName=open-webui
+PublishPort=8080:8080
+# Pointing to your vLLM engine
+Environment=OLLAMA_BASE_URL=http://host.containers.internal:11434
+# Persistent storage for your chats and documents
+Volume=open_webui_data:/app/backend/data
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
