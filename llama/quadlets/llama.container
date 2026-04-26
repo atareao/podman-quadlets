@@ -1,0 +1,51 @@
+[Unit]
+Description=llama
+After=network-online.target
+
+[Container]
+# We use the official image (check their latest tag)
+Image=ghcr.io/ggml-org/llama.cpp:server-cuda
+ContainerName=llama
+PublishPort=8000:8000
+
+AddDevice=nvidia.com/gpu=all
+Annotation=run.oci.keep_original_groups=1
+
+# Environment
+Environment=NVIDIA_DRIVER_CAPABILITIES=all
+Environment=NVIDIA_VISIBLE_DEVICES=all
+
+
+# Exec 
+# Optimized for 16GB VRAM:
+# --flash-attn: Essential for speed
+Exec=--host 0.0.0.0 \
+     --port ${PORT} \
+     -m ${MODEL_PATH} \
+     -ngl ${NGL} \
+     -c ${CONTEXT_SIZE} \
+     --flash-attn on \
+     --batch-size ${BATCH}
+
+#Volumes
+Volume=/data/models:/models:Z
+
+# Networks
+Network=llama.network
+
+[Service]
+# Restart the container if it fails
+Restart=always
+Environment=PORT=8000
+Environment=MODEL_PATH=/models/gemma-4-E4B-it-Q8_0.gguf
+#Environment=MODEL_PATH=/models/gemma-4-26b-a4b-it-Q4_K_M.gguf
+# -ngl 99: Offload everything to the 4060 Ti
+Environment=NGL=99
+# -c 32768: 32k context is very comfortable on 16GB
+Environment=CONTEXT_SIZE=128000
+# --batch 512: You can handle larger batches now
+Environment=BATCH=512
+
+[Install]
+# Start this container when the user logs in
+WantedBy=default.target

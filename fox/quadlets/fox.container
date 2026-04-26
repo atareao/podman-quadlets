@@ -1,26 +1,26 @@
 [Unit]
-Description=Ollama
+Description=Fox
 After=network-online.target
 
 [Container]
 # We use the official image (check their latest tag)
-Image=docker.io/ollama/ollama:latest
-ContainerName=ollama
-PublishPort=11434:11434
+Image=docker.io/ferrumox/fox:latest
+ContainerName=fox
+PublishPort=8000:8000
 
 AddDevice=nvidia.com/gpu=all
 Annotation=run.oci.keep_original_groups=1
 
 # Environment
-Environment="OLLAMA_DEBUG=1"
 Environment=NVIDIA_DRIVER_CAPABILITIES=all
 Environment=NVIDIA_VISIBLE_DEVICES=all
+Environment=FOX_PORT=8000
 
 #Volumes
-Volume=ollama-data.volume:/root/.ollama:Z
+Volume=fox.volume:/root/.cache/ferrumox/models:Z
 
 # Networks
-Network=ollama.network
+Network=fox-network.network
 
 [Service]
 # Restart the container if it fails

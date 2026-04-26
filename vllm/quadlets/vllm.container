@@ -1,0 +1,38 @@
+[Unit]
+Description=vLLM Inference Server
+After=network-online.target
+
+[Container]
+Image=docker.io/vllm/vllm-openai:latest
+ContainerName=vllm
+PublishPort=8000:8000
+
+# GPU Access
+AddDevice=nvidia.com/gpu=all
+Annotation=run.oci.keep_original_groups=1
+
+# Shared memory is often required for PyTorch/vLLM performance
+ShmSize=4G
+
+# Environment
+# If you plan to use gated models like Llama 3, add your token here
+# Environment=HF_TOKEN=your_token_here
+Environment=NVIDIA_DRIVER_CAPABILITIES=all
+Environment=NVIDIA_VISIBLE_DEVICES=all
+
+# Volumes
+# Mapping your local HF cache saves time and bandwidth
+Volume=vllm-cache.volume:/root/.cache/huggingface:Z
+
+# vLLM requires specific arguments to start the OpenAI-compatible server
+# Replace 'facebook/opt-125m' with your preferred model (e.g., 'meta-llama/Meta-Llama-3-8B')
+Exec=--model google/gemma-4-E4B --host 0.0.0.0 --port 8000
+
+# Networks
+Network=vllm-network.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

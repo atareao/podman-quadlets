@@ -1,6 +1,6 @@
 [Unit]
 Description=Open WebUI - The best frontend for local AI
-After=vllm.service
+After=network-online.target
 
 [Container]
 Image=ghcr.io/open-webui/open-webui:main
@@ -9,12 +9,13 @@ PublishPort=8080:8080
 
 # Environment
 Environment=OLLAMA_BASE_URL=http://ollama:11434
+Environment=OPENAI_API_KEY=unused
 
 #Volumes
 Volume=open-webui-data.volume:/app/backend/data
 
 # Networks
-Network=ollama-network.network
+Network=llama.network
 
 [Service]
 Restart=always
