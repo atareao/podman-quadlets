@@ -1,0 +1,28 @@
+[Unit]
+Description=Searxng
+After=network-online.target
+
+[Container]
+# We use the official image (check their latest tag)
+Image=docker.io/searxng/searxng:latest
+ContainerName=searxng
+PublishPort=8081:8081
+
+# Environment
+Environment="SEARXNG_PORT=8081"
+
+#Volumes
+Volume=searxng-data.volume:/var/cache/searxng:Z
+Volume=%h/.config/searxng:/etc/searxng:Z
+
+# Networks
+Network=searxng.network
+
+[Service]
+# Restart the container if it fails
+Restart=always
+
+[Install]
+# Start this container when the user logs in
+WantedBy=default.target
+

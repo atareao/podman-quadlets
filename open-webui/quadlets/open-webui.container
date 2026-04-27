@@ -16,6 +16,7 @@ Volume=open-webui-data.volume:/app/backend/data
 
 # Networks
 Network=llama.network
+Network=searxng.network
 
 [Service]
 Restart=always
