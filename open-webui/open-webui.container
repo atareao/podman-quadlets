@@ -15,8 +15,13 @@ Environment=OPENAI_API_KEY=unused
 Volume=open-webui-data.volume:/app/backend/data
 
 # Networks
-Network=llama.network
+Network=ollama.network
 Network=searxng.network
+Network=traefik.network
+
+# Labels
+Label=traefik.http.routers.open-webui.rule=Host(`open-webui.localhost`)
+Label=traefik.http.services.open-webui.loadbalancer.server.port=8080
 
 [Service]
 Restart=always

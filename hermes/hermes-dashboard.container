@@ -1,0 +1,27 @@
+[Unit]
+Description=Hermes Dashboard
+After=network-online.target
+
+[Container]
+Image=docker.io/nousresearch/hermes-agent
+ContainerName=hermes-dashboard
+
+# Environment
+Environment=HERMES_UID=10000
+Environment=HERMES_GID=10000
+
+#Volumes
+Volume=%h/.config/hermes:/opt/data
+
+# Networks
+Network=ollama.network
+
+# Command
+Exec=dashboard --host 127.0.0.1 --no-open
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
+

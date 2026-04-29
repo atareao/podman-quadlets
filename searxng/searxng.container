@@ -17,6 +17,11 @@ Volume=%h/.config/searxng:/etc/searxng:Z
 
 # Networks
 Network=searxng.network
+Network=traefik.network
+
+# Labels
+Label=traefik.http.routers.searxng.rule=Host(`searxng.localhost`)
+Label=traefik.http.services.searxng.loadbalancer.server.port=8081
 
 [Service]
 # Restart the container if it fails
