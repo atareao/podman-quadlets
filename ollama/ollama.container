@@ -15,6 +15,7 @@ Annotation=run.oci.keep_original_groups=1
 Environment="OLLAMA_DEBUG=1"
 Environment=NVIDIA_DRIVER_CAPABILITIES=all
 Environment=NVIDIA_VISIBLE_DEVICES=all
+Environment=OLLAMA_CONTEXT_LENGTH=64000
 
 #Volumes
 Volume=ollama-data.volume:/root/.ollama:Z
@@ -23,6 +24,7 @@ Volume=ollama-data.volume:/root/.ollama:Z
 Network=ollama.network
 
 [Service]
+Environment=OLLAMA_CONTEXT_LENGTH=64000
 # Restart the container if it fails
 Restart=always
 
