@@ -1,0 +1,31 @@
+[Unit]
+Description=Open Terminal
+After=network-online.target
+
+[Container]
+Image=ghcr.io/open-webui/open-terminal
+ContainerName=open-terminal
+PublishPort=8000:8000
+
+# Environment Variables
+Environment=OPEN_TERMINAL_PACKAGES="cowsay figlet"
+Environment=OPEN_TERMINAL_PIP_PACKAGES="httpx polars"
+Environment=OPEN_TERMINAL_API_KEY="12345678"
+Environment=OPEN_TERMINAL_MULTI_USER=true
+
+# Volumes
+Volume=open-terminal-data.volume:/home/user
+
+# Networks
+Network=ollama.network
+Network=traefik.network
+
+# Labels
+Label=traefik.http.routers.open-terminal.rule=Host(`open-terminal.localhost`)
+Label=traefik.http.services.open-terminal.loadbalancer.server.port=8000
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,32 @@
+[Unit]
+Description=AnythinLLM
+After=network-online.target
+
+[Container]
+# We use the official image (check their latest tag)
+Image=docker.io/mintplexlabs/anythingllm:latest
+ContainerName=anythingllm
+PublishPort=3001:3001
+
+# Environment
+Environment=STORAGE_DIR=/app/storage
+
+#Volumes
+Volume=/data/notas:/app/storage/documents:ro
+Volume=anythingllm-data.volume:/app/storage
+
+# Networks
+Network=ollama.network
+Network=traefik.network
+
+# Labels
+Label=traefik.http.routers.anythingllm.rule=Host(`anythingllm.localhost`)
+Label=traefik.http.services.anythingllm.loadbalancer.server.port=3001
+
+[Service]
+# Restart the container if it fails
+Restart=always
+
+[Install]
+# Start this container when the user logs in
+WantedBy=default.target

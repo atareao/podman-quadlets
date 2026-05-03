@@ -1,0 +1,28 @@
+[Unit]
+Description=Crawl4ai
+After=network-online.target
+
+[Container]
+Image=docker.io/unclecode/crawl4ai:latest
+ContainerName=searxng
+PublishPort=11235:11235
+
+# Environment
+
+#Volumes
+
+# Networks
+Network=traefik.network
+
+# Labels
+Label=traefik.http.routers.crawl4ai.rule=Host(`crawl4ai.localhost`)
+Label=traefik.http.services.crawl4ai.loadbalancer.server.port=11235
+
+[Service]
+# Restart the container if it fails
+Restart=always
+
+[Install]
+# Start this container when the user logs in
+WantedBy=default.target
+

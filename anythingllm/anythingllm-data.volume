@@ -1,0 +1,6 @@
+[Unit]
+Description=Volume for AnythingLLM
+
+[Volume]
+VolumeName=anythingllm-data
+

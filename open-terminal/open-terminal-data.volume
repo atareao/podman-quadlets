@@ -1,0 +1,6 @@
+[Unit]
+Description=Volume for storing data of Open Terminal
+
+[Volume]
+VolumeName=open-terminal-data
+
