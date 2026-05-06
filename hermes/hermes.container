@@ -1,0 +1,42 @@
+[Unit]
+Description=Hermes
+After=network-online.target
+
+[Container]
+Image=docker.io/nousresearch/hermes-agent
+ContainerName=hermes
+
+RemapUsers=manual
+# Map container root (0) to a host ID (e.g., your first subuid 100000)
+RemapUid=0:100000:1
+RemapGid=0:100000:1
+# Map your specific user
+RemapUid=10000:1000:1
+RemapGid=10000:1000:1
+
+PublishPort=8642:8642
+PublishPort=9119:9119
+
+# Environment
+Environment=HERMES_DASHBOARD=1
+Environment=HERMES_DASHBOARD_TUI=1
+
+#Volumes
+Volume=%h/.config/hermes:/opt/data:Z
+
+# Networks
+Network=ollama.network
+
+# Command
+Exec=gateway run
+
+# Labels
+Label=traefik.http.routers.hermes.rule=Host(`hermes.localhost`)
+Label=traefik.http.services.hermes.loadbalancer.server.port=9119
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
+
