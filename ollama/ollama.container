@@ -12,9 +12,11 @@ AddDevice=nvidia.com/gpu=all
 Annotation=run.oci.keep_original_groups=1
 
 # Environment
-Environment="OLLAMA_DEBUG=1"
 Environment=NVIDIA_DRIVER_CAPABILITIES=all
 Environment=NVIDIA_VISIBLE_DEVICES=all
+Environment=OLLAMA_DEBUG=1
+Environment=OLLAMA_FLASH_ATTENTION=1
+Environment=OLLAMA_KV_CACHE_TYPE=q8_0
 Environment=OLLAMA_CONTEXT_LENGTH=64000
 
 #Volumes
