@@ -11,9 +11,6 @@ PublishPort=8000:8000
 AddDevice=nvidia.com/gpu=all
 Annotation=run.oci.keep_original_groups=1
 
-# Shared memory is often required for PyTorch/vLLM performance
-ShmSize=4G
-
 # Environment
 # If you plan to use gated models like Llama 3, add your token here
 # Environment=HF_TOKEN=your_token_here
@@ -25,11 +22,14 @@ Environment=NVIDIA_VISIBLE_DEVICES=all
 Volume=vllm-cache.volume:/root/.cache/huggingface:Z
 
 # vLLM requires specific arguments to start the OpenAI-compatible server
-# Replace 'facebook/opt-125m' with your preferred model (e.g., 'meta-llama/Meta-Llama-3-8B')
-Exec=--model google/gemma-4-E4B --host 0.0.0.0 --port 8000
+Exec=--model Qwen/Qwen2.5-Coder-7B-Instruct \
+     --max-model-len 32768 \
+     --gpu-memory-utilization 0.9 \
+     --host 0.0.0.0 \
+     --port 9500
 
 # Networks
-Network=vllm-network.network
+Network=vllm.network
 
 [Service]
 Restart=always
