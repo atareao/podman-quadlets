@@ -6,13 +6,8 @@ After=network-online.target
 Image=docker.io/nousresearch/hermes-agent
 ContainerName=hermes
 
-RemapUsers=manual
-# Map container root (0) to a host ID (e.g., your first subuid 100000)
-RemapUid=0:100000:1
-RemapGid=0:100000:1
-# Map your specific user
-RemapUid=10000:1000:1
-RemapGid=10000:1000:1
+# This maps your host UID (1000) to the same UID inside the container
+#UserNS=keep-id:uid=110000,gid=110000
 
 PublishPort=8642:8642
 PublishPort=9119:9119
@@ -26,6 +21,8 @@ Volume=%h/.config/hermes:/opt/data:Z
 
 # Networks
 Network=ollama.network
+Network=searxng.network
+Network=traefik.network
 
 # Command
 Exec=gateway run
